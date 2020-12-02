@@ -1,0 +1,17 @@
+{application, scheduler_utilization,
+ [{description, "Non blocking scheduler utilization calculator"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {scheduler_utilization_app, []}},
+  {applications,
+   [kernel,
+    stdlib
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["Apache 2.0"]},
+  {links, [{"Github", "https://github.com/sabudaye/scheduler_utilization/"}]},
+  {build_tools, ["mix", "rebar3"]},
+  {files, ["src/", "rebar.lock", "mix.exs", "README.md", "LICENSE"]}
+ ]}.
