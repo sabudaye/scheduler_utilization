@@ -1,0 +1,20 @@
+@title Scheduler Utilization Application
+@author Stanislav Budaev <cafekoma@gmail.com>
+  [https://github.com/sabudaye]
+@copyright 2020 Stanislav Budaev (Apache 2.0 License)
+
+@doc Non blocking Erlang VM scheduler utilization calculator.
+
+The source code can be obtained from <a href="https://github.com/sabudaye/scheduler_utilization">the github repo</a>.
+
+Included modules are:
+
+<dl>
+    <dt>{@link scheduler_utilization}</dt>
+    <dd>
+        Main module, contains basic functionality to interact with
+        the `scheduler_utilization' application. It includes functions to gather
+        information about total and weighted Erlang VM scheduler usage.
+    </dd>
+</dl>
+@end

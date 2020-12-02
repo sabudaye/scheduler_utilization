@@ -30,17 +30,17 @@ all() ->
 % Test suites
 -spec total(term()) -> ok.
 total(_Config) ->
-  {ok, Pid} = scheduler_utilization:start_link(),
+  {ok, Pid} = scheduler_utilization:start_link([]),
   Sample1 = scheduler:sample(),
   Pid ! {update_utilization, Sample1},
-  ?assert(scheduler_utilization:weighted() > 0),
+  ?assert(scheduler_utilization:weighted() >= 0),
   ok.
 
 -spec weighted(term()) -> ok.
 weighted(_Config) ->
-  {ok, Pid} = scheduler_utilization:start_link(),
+  {ok, Pid} = scheduler_utilization:start_link([]),
   Sample1 = scheduler:sample(),
   Pid ! {update_utilization, Sample1},
-  ?assert(scheduler_utilization:weighted() > 0),
+  ?assert(scheduler_utilization:weighted() >= 0),
   ok.
 

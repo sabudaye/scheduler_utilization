@@ -3,7 +3,7 @@
 -behaviour(gen_server).
 
 %% API
--export([total/0, weighted/0, start_link/0]).
+-export([total/0, weighted/0, start_link/1, child_spec/1]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
@@ -14,8 +14,8 @@
 %%% API functions
 %%%===================================================================
 
-start_link() ->
-	gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+start_link(Opts) ->
+	gen_server:start_link({local, ?MODULE}, ?MODULE, Opts, []).
 
 -spec total() -> number().
 total() -> get_value(total, 0.0).
@@ -23,12 +23,22 @@ total() -> get_value(total, 0.0).
 -spec weighted() -> number().
 weighted() -> get_value(weighted, 0.0).
 
+child_spec(Opts) ->
+    #{
+        id => ?MODULE,
+        start => {?MODULE, start_link, [Opts]},
+        type => worker,
+        restart => permanent,
+        shutdown => 10000
+    }.
+
+
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
 
 %% @private
-init([]) ->
+init(_Opts) ->
 	ets:new(?MODULE, [
 		named_table,
 		{read_concurrency, true}
@@ -72,10 +82,10 @@ get_value(Key, Default) ->
     case ets:info(?MODULE) of
         undefined -> Default;
         _ ->
-            [Utilization] = ets:lookup(?MODULE, utilization),
+            [{utilization, Utilization}] = ets:lookup(?MODULE, utilization),
             case lists:keyfind(Key, 1, Utilization) of
                 false -> Default;
-                Value -> Value
+                {Key, Value, _Percent} -> Value
             end
     end.
 

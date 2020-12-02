@@ -9,7 +9,6 @@
    ]},
   {env,[]},
   {modules, []},
-
   {licenses, ["Apache 2.0"]},
   {links, [{"Github", "https://github.com/sabudaye/scheduler_utilization/"}]},
   {build_tools, ["mix", "rebar3"]},

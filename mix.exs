@@ -4,7 +4,7 @@ defmodule SchedulerUtilization.MixProject do
 
   def project do
     [
-      app: :recon,
+      app: :scheduler_utilization,
       description: "Non blocking scheduler utilization calculator",
       version: "0.1.0",
       language: :erlang,

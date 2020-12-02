@@ -29,15 +29,7 @@ init([]) ->
     SupFlags = #{strategy => one_for_all,
                  intensity => 0,
                  period => 1},
-    ChildSpecs = [
-        #{
-            id => scheduler_utilization,
-            start => {scheduler_utilization, start_link, []},
-            restrt => permanent,
-            shutdown => 10000,
-            type => worker,
-            modules => [scheduler_utilization]
-        }],
+    ChildSpecs = [scheduler_utilization:child_spec([])],
     {ok, {SupFlags, ChildSpecs}}.
 
 %% internal functions
