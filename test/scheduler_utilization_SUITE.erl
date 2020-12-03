@@ -1,7 +1,7 @@
 -module(scheduler_utilization_SUITE).
 
 -export([suite/0, init_per_suite/1, end_per_suite/1, groups/0, all/0]).
--export([total/1, weighted/1]).
+-export([total/1, weighted/1, get/1]).
 
 -include_lib("common_test/include/ct.hrl").
 -include_lib("eunit/include/eunit.hrl").
@@ -25,7 +25,7 @@ groups() ->
 
 -spec all() -> term().
 all() ->
-  [total, weighted].
+  [total, weighted, get].
 
 % Test suites
 -spec total(term()) -> ok.
@@ -44,3 +44,10 @@ weighted(_Config) ->
   ?assert(scheduler_utilization:weighted() >= 0),
   ok.
 
+-spec get(term()) -> ok.
+get(_Config) ->
+  {ok, Pid} = scheduler_utilization:start_link([]),
+  Sample1 = scheduler:sample(),
+  Pid ! {update_utilization, Sample1},
+  [{total, _, _}, {weighted, _, _} | _] = scheduler_utilization:get(),
+  ok.

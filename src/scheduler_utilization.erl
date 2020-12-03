@@ -3,12 +3,13 @@
 -behaviour(gen_server).
 
 %% API
--export([total/0, weighted/0, start_link/1, child_spec/1]).
+-export([total/0, weighted/0, get/0, start_link/1, child_spec/1]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 
--define(INTERVAL, 1000).
+-define(INTERVAL, 1000). % ms
+-define(DEFAULT, 0.0).
 
 %%%===================================================================
 %%% API functions
@@ -18,10 +19,19 @@ start_link(Opts) ->
 	gen_server:start_link({local, ?MODULE}, ?MODULE, Opts, []).
 
 -spec total() -> number().
-total() -> get_value(total, 0.0).
+total() -> get_value(total, ?DEFAULT).
 
 -spec weighted() -> number().
-weighted() -> get_value(weighted, 0.0).
+weighted() -> get_value(weighted, ?DEFAULT).
+
+-spec get() -> list() | {error, process_not_started}.
+get() ->
+    case ets:info(?MODULE) of
+        undefined -> {error, process_not_started};
+        _ ->
+            [{utilization, Utilization}] = ets:lookup(?MODULE, utilization),
+            Utilization
+    end.
 
 child_spec(Opts) ->
     #{
@@ -31,7 +41,6 @@ child_spec(Opts) ->
         restart => permanent,
         shutdown => 10000
     }.
-
 
 %%%===================================================================
 %%% gen_server callbacks

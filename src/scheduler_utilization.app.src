@@ -1,6 +1,6 @@
 {application, scheduler_utilization,
  [{description, "Non blocking scheduler utilization calculator"},
-  {vsn, "0.1.0"},
+  {vsn, "0.1.1"},
   {registered, []},
   {mod, {scheduler_utilization_app, []}},
   {applications,
